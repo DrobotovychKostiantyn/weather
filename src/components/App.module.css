@@ -1,0 +1,49 @@
+.header {
+  width: 1000px;
+  padding: 100px 40px 0 40px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto 150px;
+  border: 1px solid red;
+}
+
+.location {
+  width: 100px;
+  text-align: center;
+}
+
+.main {
+  background-color: #fff;
+  width: 1000px;
+  margin: 0 auto;
+  border-radius: 10px;
+  padding-bottom: 20px;
+}
+
+.info {
+  padding: 20px 40px;
+  display: flex;
+}
+
+.title {
+  text-align: center;
+  font-size: 30px;
+  margin: 0;
+}
+
+.btnBlock {
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  width: 200px;
+  height: 50px;
+  border: 2px solid silver;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.btn:focus {
+  outline: none;
+}
