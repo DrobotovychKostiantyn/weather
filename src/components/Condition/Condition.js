@@ -2,11 +2,10 @@ import React from 'react';
 
 import s from './Condition.module.css';
 
-const Condition = () => (
+const Condition = ({ img, text }) => (
   <div className={s.condition}>
-    <img src="//cdn.apixu.com/weather/64x64/day/116.png" alt="cloud" />
-    <p>Clear</p>
-    <p />
+    <img src={img} alt={text} />
+    <p>{text}</p>
   </div>
 );
 

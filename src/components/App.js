@@ -5,6 +5,7 @@ import Time from './Time/Time';
 import Therm from './Therm/Therm';
 import SetAndRise from './SetAndRise/SetAndRise';
 import Condition from './Condition/Condition';
+import DayForecast from './DayForecast/DayForecast';
 
 import * as api from '../api';
 
@@ -13,50 +14,64 @@ import s from './App.module.css';
 const styleForBackground = largeImageURL => ({
   backgroundImage: `url(${largeImageURL})`,
   backgroundSize: 'cover',
-  width: '100vw',
-  height: '100vh',
+  minHeight: '100vh',
+  width: '100%',
+  height: '100%',
+  paddingBottom: 100,
 });
 
 export default class App extends Component {
   state = {
-    city: null,
     search: '',
-    today: null,
-    error: null,
+    forecast: null,
     background: null,
     isForecastOpen: false,
   };
 
   componentDidMount() {
-    api.fetchWeatherWithIP().then(res => this.setState({ today: res }));
+    api.fetchWeatherWithIP().then(forecast => this.setState({ forecast }));
 
     api
       .fetchPhoto()
       .then(res => this.setState({ background: res.hits[2].largeImageURL }));
   }
 
-  handleChangeSearch = ({ target: { value } }) => {
+  handleChangeSearch = ({ target: { value, name } }) => {
     this.setState({
-      search: value,
+      [name]: value,
     });
   };
 
   handleSubmitSearchForm = e => {
     e.preventDefault();
 
-    console.log(this.state);
+    const { search } = this.state;
 
-    this.setState(prev => ({
-      city: prev.search,
-    }));
+    api
+      .fetchWeatherTodayByCity(search)
+      .then(({ data }) => this.setState({ forecast: data }));
   };
 
   handleClickShowForecast = () => {
-    this.setState(state => ({ isForecastOpen: !state.isForecastOpen }));
+    const currentScroll = window.pageYOffset + 150;
+
+    this.setState(
+      () => ({ isForecastOpen: true }),
+      () =>
+        window.scrollTo({
+          top: currentScroll,
+          left: 0,
+          behavior: 'smooth',
+        }),
+    );
+  };
+
+  handleClickHideForecast = () => {
+    this.setState(() => ({ isForecastOpen: false }));
   };
 
   render() {
-    const { search, today, background, isForecastOpen } = this.state;
+    const { search, forecast, background, isForecastOpen } = this.state;
 
     return (
       <div style={styleForBackground(background)}>
@@ -69,36 +84,86 @@ export default class App extends Component {
 
           <div className={s.location}>
             <i className="material-icons">location_on</i>
-            {today && <p>{today.location.tz_id}</p>}
+            {forecast && (
+              <p className={s.locationText}>{forecast.location.name}</p>
+            )}
           </div>
         </div>
 
-        {/* <h3 className={s.title}>Today</h3> */}
-
-        <div className={s.main}>
-          <div className={s.info}>
-            <Time />
-            <Therm />
-            <SetAndRise />
-            <Condition />
-          </div>
-
-          <div className={s.btnBlock}>
-            <button
-              type="button"
-              onClick={this.handleClickShowForecast}
-              className={s.btn}
-            >
-              {isForecastOpen ? 'Hide' : 'Show forecast for 5 days'}
-            </button>
-          </div>
-
-          {isForecastOpen && (
-            <div>
-              <h3>forecast</h3>
+        {forecast && (
+          <div className={s.main}>
+            <div className={s.info}>
+              <Time />
+              <Therm
+                temp={forecast.current.temp_c}
+                min={
+                  String(forecast.forecast.forecastday[0].day.mintemp_c)
+                    .length > 2
+                    ? String(
+                        forecast.forecast.forecastday[0].day.mintemp_c,
+                      ).slice(0, 2)
+                    : forecast.forecast.forecastday[0].day.mintemp_c
+                }
+                max={
+                  String(forecast.forecast.forecastday[0].day.mintemp_c)
+                    .length > 2
+                    ? String(
+                        forecast.forecast.forecastday[0].day.maxtemp_c,
+                      ).slice(0, 2)
+                    : forecast.forecast.forecastday[0].day.maxtemp_c
+                }
+              />
+              <SetAndRise
+                sunriseTime={forecast.forecast.forecastday[0].astro.sunrise.slice(
+                  0,
+                  5,
+                )}
+                sunsetTime={forecast.forecast.forecastday[0].astro.sunset.slice(
+                  0,
+                  5,
+                )}
+                moonriseTime={forecast.forecast.forecastday[0].astro.moonrise.slice(
+                  0,
+                  5,
+                )}
+                moonsetTime={forecast.forecast.forecastday[0].astro.moonset.slice(
+                  0,
+                  5,
+                )}
+              />
+              <Condition
+                img={forecast.forecast.forecastday[0].day.condition.icon}
+                text={forecast.forecast.forecastday[0].day.condition.text}
+              />
             </div>
-          )}
-        </div>
+
+            <div className={s.btnBlock}>
+              <button
+                type="button"
+                onClick={
+                  isForecastOpen
+                    ? this.handleClickHideForecast
+                    : this.handleClickShowForecast
+                }
+                className={s.btn}
+              >
+                {isForecastOpen ? 'Hide' : 'Show forecast for 5 days'}
+              </button>
+            </div>
+
+            {isForecastOpen && (
+              <div className={s.forecast}>
+                <DayForecast style={s.dayForecast} />
+                <DayForecast style={s.dayForecast} />
+                <DayForecast style={s.dayForecast} />
+                <DayForecast style={s.dayForecast} />
+                <DayForecast style={s.dayForecast} />
+                <DayForecast style={s.dayForecast} />
+                <DayForecast />
+              </div>
+            )}
+          </div>
+        )}
       </div>
     );
   }

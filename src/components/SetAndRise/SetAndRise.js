@@ -7,29 +7,29 @@ import moonset from '../../assets/moonset.png';
 
 import s from './SetAndRise.module.css';
 
-const SetAndRise = () => (
+const SetAndRise = ({ sunriseTime, sunsetTime, moonriseTime, moonsetTime }) => (
   <div className={s.setAndRise}>
     <div className={s.sunBlock}>
       <div className={s.sunrise}>
         <img src={sunrise} alt="Sunrice" className={s.sunriseImage} />
-        <p>23:22</p>
+        <p>{sunriseTime}</p>
       </div>
 
       <div className={s.sunset}>
         <img src={sunset} alt="Sunrice" className={s.sunsetImage} />
-        <p>23:22</p>
+        <p>{sunsetTime}</p>
       </div>
     </div>
 
     <div className={s.moonBlock}>
       <div className={s.moonrise}>
         <img src={moonrise} alt="Moonrise" className={s.moonriseImage} />
-        <p>23:22</p>
+        <p>{moonriseTime}</p>
       </div>
 
       <div className={s.moonset}>
         <img src={moonset} alt="Moonset" className={s.moonsetImage} />
-        <p>23:22</p>
+        <p>{moonsetTime}</p>
       </div>
     </div>
   </div>

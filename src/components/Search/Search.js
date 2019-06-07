@@ -10,6 +10,7 @@ const Search = ({ value, onSubmit, onChange }) => (
       onChange={onChange}
       className={s.search}
       placeholder="Enter city"
+      name="search"
     />
     <button type="submit" className={s.btn}>
       Search
