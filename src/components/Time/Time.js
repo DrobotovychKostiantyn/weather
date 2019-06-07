@@ -4,31 +4,36 @@ import s from './Time.module.css';
 
 import * as namesOfDayAndMonth from '../../assets/date';
 
-const time = () => {
-  const date = new Date();
-  const dayOfWeek = date.getDay();
-  const month = date.getMonth();
+const time = timeData => {
+  const timeNow = new Date();
+  const hours =
+    timeData.slice(timeData.indexOf(' ') + 1).length === 4
+      ? `0${timeData.slice(timeData.indexOf(' ') + 1)}`
+      : timeData.slice(timeData.indexOf(' '));
+  const dayOfWeek = timeNow.getDay();
+  const day =
+    timeData.slice(9, 11)[0] !== 0
+      ? `0${timeData.slice(9, 11)}`
+      : timeData.slice(9, 11);
+  const month =
+    timeData.slice(6, 7)[0] !== 0 ? timeData.slice(6, 7) : timeData.slice(6, 7);
 
   return {
     dayOfWeek: namesOfDayAndMonth.dayOfWeek[dayOfWeek],
     monthName: namesOfDayAndMonth.month[month],
-    day: date.getDate() < 9 ? `0${date.getDate()}` : date.getDate(),
-    hours: date.getHours() < 9 ? `0${date.getHours()}` : date.getHours(),
-    minutes:
-      date.getMinutes() < 9 ? `0${date.getMinutes()}` : date.getMinutes(),
-    seconds:
-      date.getSeconds() < 9 ? `0${date.getSeconds()}` : date.getSeconds(),
+    hours,
+    day,
   };
 };
 
-const Time = () => {
-  const timeNow = time();
+const Time = ({ timeData }) => {
+  const timeNow = time(timeData);
   return (
     <div className={s.time}>
       <p>{timeNow.dayOfWeek}</p>
       <p className={s.date}>{timeNow.day}</p>
       <p>{timeNow.monthName}</p>
-      <p>{`${timeNow.hours}:${timeNow.minutes}:${timeNow.seconds}`}</p>
+      <p>{`${timeNow.hours}`}</p>
     </div>
   );
 };

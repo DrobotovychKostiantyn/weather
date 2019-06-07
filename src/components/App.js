@@ -26,6 +26,7 @@ export default class App extends Component {
     forecast: null,
     background: null,
     isForecastOpen: false,
+    error: null,
   };
 
   componentDidMount() {
@@ -42,14 +43,32 @@ export default class App extends Component {
     });
   };
 
-  handleSubmitSearchForm = e => {
+  handleSubmitSearchForm = async e => {
     e.preventDefault();
 
     const { search } = this.state;
 
-    api
-      .fetchWeatherTodayByCity(search)
-      .then(({ data }) => this.setState({ forecast: data }));
+    // api
+    //   .fetchWeatherTodayByCity(search)
+    //   .then(({ data }) => this.setState({ forecast: data }))
+    //   .catch(error => this.setState({ error }));
+
+    // api
+    //   .fetchPhoto(search)
+    //   .then(res => this.setState({ background: res.hits[2].largeImageURL }))
+    //   .catch(error => this.setState({ error }));
+
+    try {
+      const weather = await api.fetchWeatherTodayByCity(search);
+      const photo = await api.fetchPhoto(search);
+
+      this.setState({
+        forecast: weather.data,
+        background: photo.hits[2].largeImageURL,
+      });
+    } catch (error) {
+      this.setState({ error });
+    }
   };
 
   handleClickShowForecast = () => {
@@ -70,8 +89,14 @@ export default class App extends Component {
     this.setState(() => ({ isForecastOpen: false }));
   };
 
+  handleError = () => {
+    alert('Please enter valid city!');
+
+    this.setState({ error: null });
+  };
+
   render() {
-    const { search, forecast, background, isForecastOpen } = this.state;
+    const { search, forecast, background, isForecastOpen, error } = this.state;
 
     return (
       <div style={styleForBackground(background)}>
@@ -93,7 +118,7 @@ export default class App extends Component {
         {forecast && (
           <div className={s.main}>
             <div className={s.info}>
-              <Time />
+              <Time timeData={forecast.location.localtime} />
               <Therm
                 temp={forecast.current.temp_c}
                 min={
@@ -147,23 +172,42 @@ export default class App extends Component {
                 }
                 className={s.btn}
               >
-                {isForecastOpen ? 'Hide' : 'Show forecast for 5 days'}
+                {isForecastOpen ? 'Hide' : 'Show forecast for week'}
               </button>
             </div>
 
             {isForecastOpen && (
-              <div className={s.forecast}>
-                <DayForecast style={s.dayForecast} />
-                <DayForecast style={s.dayForecast} />
-                <DayForecast style={s.dayForecast} />
-                <DayForecast style={s.dayForecast} />
-                <DayForecast style={s.dayForecast} />
-                <DayForecast style={s.dayForecast} />
-                <DayForecast />
-              </div>
+              <ul className={s.forecast}>
+                {forecast.forecast.forecastday.map((data, idx) => (
+                  <li key={data.date_epoch}>
+                    <DayForecast
+                      style={idx !== 7 ? s.dayForecast : null}
+                      min={
+                        String(data.day.mintemp_c).length > 2
+                          ? String(data.day.mintemp_c).slice(0, 2)
+                          : data.day.mintemp_c
+                      }
+                      max={
+                        String(data.day.maxtemp_c).length > 2
+                          ? String(data.day.maxtemp_c).slice(0, 2)
+                          : data.day.maxtemp_c
+                      }
+                      img={data.day.condition.icon}
+                      day={data.date.slice(9)}
+                      month={
+                        data.date.slice(5, 7)[0] === '0'
+                          ? data.date.slice(6, 7)
+                          : data.date.slice(5, 7)
+                      }
+                    />
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
         )}
+
+        {error && this.handleError()}
       </div>
     );
   }
