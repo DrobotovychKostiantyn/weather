@@ -6,7 +6,7 @@ export const fetchUserIP = () =>
 export const fetchWeatherTodayByCity = city =>
   axios
     .get(
-      `http://api.apixu.com/v1/forecast.json?key=cd2562ed90744c01b5e181304190402&q=${city}&days=7`,
+      `https://api.apixu.com/v1/forecast.json?key=cd2562ed90744c01b5e181304190402&q=${city}&days=7`,
     )
     .then(res => res);
 

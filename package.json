@@ -9,7 +9,7 @@
     "react-dom": "^16.8.6",
     "react-scripts": "2.1.8"
   },
-  "homepage": "https://kostiadrobotovych.github.io/weaher/",
+  "homepage": "https://kostiadrobotovych.github.io/weather/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -19,7 +19,7 @@
     "lint": "eslint src/**/*.js",
     "lint:fix": "eslint src/**/*.js --fix",
     "lint:format": "prettier src/**/*.{js,css,json} --write",
-    "predeploy": "yarn build",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
