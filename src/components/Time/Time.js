@@ -20,7 +20,7 @@ const time = timeData => {
 
   return {
     dayOfWeek: namesOfDayAndMonth.dayOfWeek[dayOfWeek],
-    monthName: namesOfDayAndMonth.month[month],
+    monthName: namesOfDayAndMonth.month[month - 1],
     hours,
     day,
   };

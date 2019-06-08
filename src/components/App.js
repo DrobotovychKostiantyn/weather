@@ -20,6 +20,21 @@ const styleForBackground = largeImageURL => ({
   paddingBottom: 100,
 });
 
+const addDayInForecastday = forecast => ({
+  ...forecast,
+  forecast: {
+    forecastday: forecast.forecast.forecastday.map(item => {
+      const date = new Date(item.date.split('-'));
+
+      console.log(date.getDay());
+      return {
+        ...item,
+        dayOfWeek: date.getDay(),
+      };
+    }),
+  },
+});
+
 export default class App extends Component {
   state = {
     search: '',
@@ -30,7 +45,11 @@ export default class App extends Component {
   };
 
   componentDidMount() {
-    api.fetchWeatherWithIP().then(forecast => this.setState({ forecast }));
+    api
+      .fetchWeatherWithIP()
+      .then(forecast =>
+        this.setState({ forecast: addDayInForecastday(forecast) }),
+      );
 
     api
       .fetchPhoto()
@@ -47,16 +66,6 @@ export default class App extends Component {
     e.preventDefault();
 
     const { search } = this.state;
-
-    // api
-    //   .fetchWeatherTodayByCity(search)
-    //   .then(({ data }) => this.setState({ forecast: data }))
-    //   .catch(error => this.setState({ error }));
-
-    // api
-    //   .fetchPhoto(search)
-    //   .then(res => this.setState({ background: res.hits[2].largeImageURL }))
-    //   .catch(error => this.setState({ error }));
 
     try {
       const weather = await api.fetchWeatherTodayByCity(search);
@@ -193,12 +202,13 @@ export default class App extends Component {
                           : data.day.maxtemp_c
                       }
                       img={data.day.condition.icon}
-                      day={data.date.slice(9)}
+                      day={data.date.slice(8)}
                       month={
                         data.date.slice(5, 7)[0] === '0'
                           ? data.date.slice(6, 7)
                           : data.date.slice(5, 7)
                       }
+                      dayOfWeek={data.dayOfWeek}
                     />
                   </li>
                 ))}
