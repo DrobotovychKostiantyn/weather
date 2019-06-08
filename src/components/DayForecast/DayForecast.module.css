@@ -26,14 +26,27 @@
   text-align: center;
 }
 
+.maxBlock,
+.minBlock {
+  width: 50%;
+  text-align: center;
+}
+
 .minNum,
 .maxNum {
   font-weight: 700;
   font-size: 20px;
 }
 
-.maxBlock,
-.minBlock {
-  width: 50%;
-  text-align: center;
+.minNum:after,
+.maxNum:after {
+  content: '';
+  display: block;
+  width: 7px;
+  height: 7px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  position: relative;
+  bottom: 27px;
+  left: 33px;
 }

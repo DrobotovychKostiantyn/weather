@@ -11,18 +11,12 @@ const Therm = ({ temp, min, max }) => (
       <div>
         <p className={s.therm}>{temp}</p>
 
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            width: 80,
-          }}
-        >
-          <div style={{ textAlign: 'center' }}>
+        <div className={s.minAndMax}>
+          <div className={s.minBlock}>
             <p>min.</p>
             <p className={s.minNum}>{min}</p>
           </div>
-          <div style={{ textAlign: 'center' }}>
+          <div className={s.maxBlock}>
             <p>max.</p>
             <p className={s.maxNum}>{max}</p>
           </div>
