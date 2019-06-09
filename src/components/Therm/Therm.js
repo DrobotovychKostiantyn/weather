@@ -7,7 +7,7 @@ import s from './Therm.module.css';
 const Therm = ({ temp, min, max }) => (
   <div className={s.wrap}>
     <div className={s.thermometer}>
-      <img src={thermometer} alt="thermometer" />
+      <img src={thermometer} className={s.img} alt="thermometer" />
       <div>
         <p className={s.therm}>{temp}</p>
 
