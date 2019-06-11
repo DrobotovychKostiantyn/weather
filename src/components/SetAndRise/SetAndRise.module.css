@@ -31,35 +31,8 @@
 
 @media screen and (max-width: 1024px) {
   .setAndRise {
-    /* padding: 25px 0 0 0; */
     margin-right: 30px;
   }
-
-  /* .sunBlock,
-  .moonBlock {
-    display: flex;
-    padding-left: 30px;
-  }
-
-  .moonrise,
-  .sunrise {
-    margin-right: 15px;
-  }
-
-  .sunrise,
-  .sunset,
-  .moonrise,
-  .moonset {
-    display: flex;
-    align-items: center;
-  }
-
-  .sunriseImage,
-  .sunsetImage,
-  .moonsetImage,
-  .moonriseImage {
-    width: 60px;
-  } */
 }
 
 @media screen and (max-width: 830px) {
@@ -70,21 +43,12 @@
 
   .sunBlock,
   .moonBlock {
-    /* display: flex; */
     padding-left: 15px;
   }
 
   .moonrise,
   .sunrise {
     margin-right: 5px;
-  }
-
-  .sunrise,
-  .sunset,
-  .moonrise,
-  .moonset {
-    /* display: flex;
-    align-items: center; */
   }
 
   .sunriseImage,
@@ -96,32 +60,8 @@
 }
 
 @media screen and (max-width: 630px) {
-  .setAndRise {
-    /* padding: 40px 0 0 0;
-    margin-right: 20px; */
-  }
-
-  .sunBlock,
-  .moonBlock {
-    /* display: flex; */
-    /* padding-left: 15px; */
-  }
-
   .sunBlock {
     margin-bottom: 10px;
-  }
-
-  .moonrise,
-  .sunrise {
-    /* margin-right: 5px; */
-  }
-
-  .sunrise,
-  .sunset,
-  .moonrise,
-  .moonset {
-    /* display: flex;
-    align-items: center; */
   }
 
   .sunriseImage,

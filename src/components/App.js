@@ -78,6 +78,8 @@ export default class App extends Component {
     } catch (error) {
       this.setState({ error });
     }
+
+    this.setState({ search: '' });
   };
 
   handleClickShowForecast = () => {
