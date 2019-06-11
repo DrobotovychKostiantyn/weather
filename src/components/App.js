@@ -144,7 +144,9 @@ export default class App extends Component {
                     ? String(
                         forecast.forecast.forecastday[0].day.maxtemp_c,
                       ).slice(0, 2)
-                    : forecast.forecast.forecastday[0].day.maxtemp_c
+                    : String(
+                        forecast.forecast.forecastday[0].day.maxtemp_c,
+                      ).slice(0, 2)
                 }
               />
               <SetAndRise
